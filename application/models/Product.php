@@ -37,4 +37,12 @@ class Product extends \app\classes\ActiveRecord {
     public function getBrand() {
         return $this->hasOne(Brand::className(), ['id' => 'brandId']);
     }
+
+    public function getImages() {
+        return $this->hasMany(ProductImage::className(), ['productId' => 'id'])->orderBy('position');
+    }
+
+    public function getCover() {
+        return $this->hasOne(ProductImage::className(), ['productId' => 'id'])->where(['position' => 1]);
+    }
 }
