@@ -24,4 +24,8 @@ class Brand extends \app\classes\ActiveRecord {
             ['name', 'unique'],
         ];
     }
+    
+    public function getProducts() {
+        return $this->hasMany(Product::className(), ['brandId' => 'id']);
+    }
 }
