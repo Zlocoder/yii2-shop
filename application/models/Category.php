@@ -37,4 +37,8 @@ class Category extends \app\classes\ActiveRecord {
     public function getChildren() {
         return $this->hasMany(self::className(), ['parentId' => 'id']);
     }
+
+    public function getProducts() {
+        return $this->hasMany(Product::className(), ['categoryId' => 'id']);
+    }
 }
