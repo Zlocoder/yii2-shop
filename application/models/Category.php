@@ -2,6 +2,8 @@
 
 namespace app\models;
 
+use yii\helpers\ArrayHelper;
+
 class Category extends \app\classes\ActiveRecord {
     public static function tableName() {
         return 'category';
@@ -40,5 +42,32 @@ class Category extends \app\classes\ActiveRecord {
 
     public function getProducts() {
         return $this->hasMany(Product::className(), ['categoryId' => 'id']);
+    }
+    
+    public static function getOptions($root = true) {
+        if ($root) {
+            return ArrayHelper::map(
+                self::find()->with('parent')
+                    ->where(['parentId' => null])->select(['id', 'name'])->orderBy('name')->asArray()->all(),
+                'id', 'name'
+            );
+        }
+        
+        $array = Category::find()->select(['id', 'parentId', 'name'])->orderBy('parentId, name')->asArray()->all();
+        $result = [];
+        
+        foreach ($array as $parent) {
+            if ($parent['parentId']) {
+                break;
+            }
+            
+            $result[$parent['id']] = $parent['name'];
+            
+            foreach ($array as $child) {
+                if ($child['parentId'] == $parent['id']) {
+                    $result[$child['id']] = '   ' . $child['name'];
+                }
+            }
+        }
     }
 }
