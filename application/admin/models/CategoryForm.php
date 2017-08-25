@@ -57,7 +57,7 @@ class CategoryForm extends \yii\base\Model {
                 'targetClass' => Category::className(),
                 'targetAttribute' => ['parentId', 'slug'],
                 'filter' => ['!=', 'id', $this->_category->id],
-                'message' => 'акой ЧПУ уже существует',
+                'message' => 'Такой ЧПУ уже существует',
                 'on' => ['update']
             ],
             [
